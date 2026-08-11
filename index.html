@@ -151,7 +151,8 @@
     <script src="words_b2.js"></script>
     <script src="words_c1.js"></script>
 </head>
-<body>
+<body data-theme="dark">
+
 
     <div class="nav-bar">
         <button class="nav-btn" id="nav-back-btn" style="display: none;" onclick="switchMainTab('home-tab')">‹ گەڕانەوە</button>
@@ -733,18 +734,24 @@
         const themeLabel = document.getElementById('theme-text-label');
         const themeMeta = document.getElementById('theme-meta'); 
 
-        if (localStorage.getItem('theme') === 'dark') {
+        // لێرەدا پێی دەڵێین: ئەگەر پێشتر بە دەستی خۆی نەیگۆڕیبوو بۆ ڕووناک، ئەوا با تاریک بێت
+        if (localStorage.getItem('theme') !== 'light') {
             document.body.setAttribute('data-theme', 'dark'); 
             const toggle = document.getElementById('theme-toggle');
             if(toggle) toggle.checked = true;
             if(themeLabel) themeLabel.innerText = '🌙 دۆخی تاریک';
             if(themeMeta) themeMeta.setAttribute('content', '#000000'); 
         } else {
+            // ئەگەر پێشتر ڕووناکی هەڵبژاردبوو
+            document.body.removeAttribute('data-theme');
+            const toggle = document.getElementById('theme-toggle');
+            if(toggle) toggle.checked = false;
             if(themeLabel) themeLabel.innerText = '☀️ دۆخی ڕووناک';
             if(themeMeta) themeMeta.setAttribute('content', '#f2f2f7'); 
         }
         renderHome(); 
     };
+
 </script>
 </body>
 </html>
