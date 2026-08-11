@@ -494,7 +494,8 @@
             <div class="english-word">${wordObj.en}</div>
             ${wordObj.ipa ? `<div class="ipa-text">${wordObj.ipa}</div>` : ''}
             ${wordObj.kuPron ? `<div style="font-size: 16px; color: var(--text-muted); text-align: center; margin-bottom: 12px; width: 100%; display: flex; justify-content: center;">${wordObj.kuPron}</div>` : ''}
-            ${wordObj.img ? `<div style="font-size: 60px;">${wordObj.img}</div>` : ''}</div>`;
+${wordObj.img ? `<div style="font-size: 60px; display: flex; justify-content: center; width: 100%; margin-top: 10px;">${wordObj.img}</div>` : ''}</div>`;
+
 
         let backHtml = `<div class="card-content-inner" style="justify-content: flex-start; padding-top: 15px; width: 100%;">
             <h2 class="back-ku-word">${wordObj.ku}</h2>`;
