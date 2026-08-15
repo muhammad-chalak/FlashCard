@@ -8,139 +8,167 @@
     <title>FlashCard Pro</title>
     <style>
         :root {
-            --bg-color: #f2f2f7; --card-bg: #ffffff; --text-main: #000000; --text-muted: #8e8e93;
-            --sys-blue: #007aff; --sys-green: #34c759; --sys-red: #ff3b30; --sys-orange: #ff9500;
-            --nav-bg: rgba(255, 255, 255, 0.85); --border-color: #c6c6c8; --search-bg: #e3e3e8;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.06); --modal-overlay: rgba(0, 0, 0, 0.4);
+            --bg-color: #f2f2f7; --card-bg: #ffffff; --text-main: #000000; --text-secondary: rgba(60,60,67,0.68); --text-muted: rgba(60,60,67,0.46);
+            --sys-blue: #007aff; --sys-green: #34c759; --sys-red: #ff3b30; --sys-orange: #ff9500; --sys-indigo: #5e5ce6; --sys-purple: #af52de;
+            --nav-bg: rgba(248, 248, 250, 0.78); --border-color: #c6c6c8; --search-bg: rgba(118,118,128,0.12); --separator: rgba(60,60,67,0.16);
+            --shadow-card: 0 1px 2px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06); --shadow-float: 0 20px 44px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.05);
+            --modal-overlay: rgba(0, 0, 0, 0.4); --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         [data-theme="dark"] {
-            --bg-color: #000000; --card-bg: #1c1c1e; --text-main: #ffffff; --text-muted: #8e8e93;
-            --sys-blue: #0a84ff; --sys-green: #30d158; --sys-red: #ff453a; --sys-orange: #ff9f0a;
-            --nav-bg: rgba(28, 28, 30, 0.85); --border-color: #48484a; --search-bg: #2c2c2e;
+            --bg-color: #000000; --card-bg: #1c1c1e; --text-main: #ffffff; --text-secondary: rgba(235,235,245,0.68); --text-muted: rgba(235,235,245,0.46);
+            --sys-blue: #0a84ff; --sys-green: #30d158; --sys-red: #ff453a; --sys-orange: #ff9f0a; --sys-indigo: #7d7aff; --sys-purple: #bf5af2;
+            --nav-bg: rgba(22, 22, 24, 0.78); --border-color: #48484a; --search-bg: rgba(118,118,128,0.24); --separator: rgba(84,84,88,0.42);
+            --shadow-card: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35); --shadow-float: 0 20px 50px rgba(0,0,0,0.55), 0 2px 10px rgba(0,0,0,0.3);
+            --modal-overlay: rgba(0, 0, 0, 0.6);
         }
-        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-color); color: var(--text-main); margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; transition: background-color 0.3s, color 0.3s; padding-bottom: 70px; }
-        
-        .nav-bar { width: 100%; height: 60px; display: flex; justify-content: space-between; align-items: center; padding: 0 16px; background: var(--nav-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); position: sticky; top: 0; z-index: 1000; border-bottom: 0.5px solid var(--border-color); }
-        .nav-title { font-size: 17px; font-weight: 600; position: absolute; left: 50%; transform: translateX(-50%); }
-        .nav-btn { background: none; border: none; color: var(--sys-blue); font-size: 17px; cursor: pointer; display: flex; align-items: center; gap: 4px; }
-        
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: var(--nav-bg); backdrop-filter: blur(20px); border-top: 0.5px solid var(--border-color); display: flex; justify-content: space-around; align-items: center; z-index: 1000; padding-bottom: env(safe-area-inset-bottom); }
-        .nav-tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 11px; font-weight: 600; gap: 4px; cursor: pointer; transition: 0.2s; }
-        .nav-tab.active { color: var(--sys-blue); }
-        .nav-tab-icon { font-size: 22px; }
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; -webkit-font-smoothing: antialiased; }
+        body { background-color: var(--bg-color); color: var(--text-main); margin: 0; display: flex; flex-direction: column; align-items: center; min-height: 100vh; overflow-x: hidden; transition: background-color 0.35s var(--ease-smooth), color 0.35s var(--ease-smooth); padding-bottom: 70px; }
 
-        .view-container { width: 100%; max-width: 600px; padding: 20px 16px; display: none; flex-direction: column; animation: fadeIn 0.3s ease-out; }
+        .nav-bar { width: 100%; height: 56px; display: flex; justify-content: space-between; align-items: center; padding: 0 16px; background: var(--nav-bg); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); position: sticky; top: 0; z-index: 1000; border-bottom: 0.5px solid var(--separator); }
+        .nav-title { font-size: 17px; font-weight: 600; position: absolute; left: 50%; transform: translateX(-50%); }
+        .nav-btn { background: none; border: none; color: var(--sys-blue); font-size: 17px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: opacity 0.15s; }
+        .nav-btn:active { opacity: 0.4; }
+
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: var(--nav-bg); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-top: 0.5px solid var(--separator); display: flex; justify-content: space-around; align-items: center; z-index: 1000; padding-bottom: env(safe-area-inset-bottom); }
+        .nav-tab { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); font-size: 10.5px; font-weight: 600; gap: 4px; cursor: pointer; transition: transform 0.25s var(--ease-spring), color 0.2s; height: 100%; }
+        .nav-tab.active { color: var(--sys-blue); }
+        .nav-tab:active { transform: scale(0.92); }
+        .nav-tab-icon { font-size: 22px; transition: transform 0.25s var(--ease-spring); }
+        .nav-tab.active .nav-tab-icon { transform: translateY(-1px) scale(1.06); }
+
+        .view-container { width: 100%; max-width: 600px; padding: 20px 16px; display: none; flex-direction: column; animation: fadeIn 0.35s var(--ease-smooth); }
         .view-active { display: flex; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .daily-goal-box { background: linear-gradient(135deg, #007aff, #5ac8fa); color: white; border-radius: 16px; padding: 20px; margin-bottom: 24px; box-shadow: 0 10px 20px rgba(0,122,255,0.2); display: flex; justify-content: space-between; align-items: center;}
-        .goal-text h3 { margin: 0 0 5px 0; font-size: 18px; }
-        .goal-text p { margin: 0; font-size: 14px; opacity: 0.9; }
 
-        .search-bar { width: 100%; padding: 0; margin-bottom: 20px; }
-        .search-input { width: 100%; background-color: var(--search-bg); border: none; padding: 12px 16px; border-radius: 12px; font-size: 16px; color: var(--text-main); outline: none; }
-        
-        .ios-group { background: var(--card-bg); border-radius: 12px; overflow: hidden; margin-bottom: 24px; box-shadow: var(--shadow); }
-        .ios-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 0.5px solid var(--border-color); cursor: pointer; }
+        .daily-goal-box { background: linear-gradient(135deg, #0a84ff 0%, #5e5ce6 60%, #af52de 100%); color: white; border-radius: 22px; padding: 20px; margin-bottom: 24px; box-shadow: 0 16px 32px rgba(94,92,230,0.28), 0 4px 12px rgba(10,132,255,0.16); display: flex; justify-content: space-between; align-items: center; position: relative; overflow: hidden;}
+        .daily-goal-box::before { content: ''; position: absolute; top: -60%; right: -10%; width: 200px; height: 200px; background: rgba(255,255,255,0.10); border-radius: 50%; }
+        .goal-text { position: relative; z-index: 1; }
+        .goal-text h3 { margin: 0 0 5px 0; font-size: 18px; font-weight: 700; }
+        .goal-text p { margin: 0; font-size: 14px; opacity: 0.9; font-weight: 500; }
+
+        .search-bar { width: 100%; padding: 0; margin-bottom: 20px; position: relative; }
+        .search-input { width: 100%; background-color: var(--search-bg); border: none; padding: 12px 40px 12px 16px; border-radius: 12px; font-size: 16px; color: var(--text-main); outline: none; transition: background-color 0.2s; }
+        .search-bar::before {
+            content: ''; position: absolute; top: 50%; right: 14px; width: 16px; height: 16px; transform: translateY(-50%);
+            background-color: var(--text-muted);
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z'/%3E%3C/svg%3E");
+            mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M15.5 14h-.79l-.28-.27a6.5 6.5 0 1 0-.7.7l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z'/%3E%3C/svg%3E");
+            -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+            -webkit-mask-position: center; mask-position: center;
+            -webkit-mask-size: contain; mask-size: contain;
+            pointer-events: none;
+        }
+
+        .ios-group { background: var(--card-bg); border-radius: 14px; overflow: hidden; margin-bottom: 24px; box-shadow: var(--shadow-card); }
+        .ios-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 16px; cursor: pointer; position: relative; transition: background-color 0.15s; }
+        .ios-item::after { content: ''; position: absolute; bottom: 0; right: 16px; left: 16px; height: 0.5px; background: var(--separator); }
         .ios-item:active { background-color: var(--search-bg); }
-        .ios-item:last-child { border-bottom: none; }
-        .level-title { font-size: 17px; font-weight: 600; direction: ltr; }
-        .level-stats { display: flex; flex-direction: column; align-items: flex-end; font-size: 14px; color: var(--text-muted); }
-        .chevron { color: var(--text-muted); font-size: 20px; margin-right: 10px; }
+        .ios-item:last-child::after { display: none; }
+        .level-title { font-size: 17px; font-weight: 600; direction: ltr; letter-spacing: -0.2px; }
+        .level-stats { display: flex; flex-direction: column; align-items: flex-end; font-size: 13px; color: var(--text-muted); gap: 2px; font-weight: 500; }
+        .chevron { color: var(--text-muted); font-size: 19px; margin-right: 8px; opacity: 0.55; font-weight: 700; }
 
-        .flashcard-top-bar { position: relative; display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 15px; }
-        .btn-reset-seen { background-color: rgba(255, 59, 48, 0.12); color: var(--sys-red); border: none; padding: 8px 14px; border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .btn-reset-seen:active { transform: scale(0.95); }
+        .flashcard-top-bar { position: relative; display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 16px; }
+        .btn-reset-seen { background-color: rgba(255, 59, 48, 0.12); color: var(--sys-red); border: none; padding: 8px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; transition: transform 0.15s var(--ease-spring), background-color 0.2s; }
+        .btn-reset-seen:active { transform: scale(0.94); background-color: rgba(255, 59, 48, 0.2); }
 
-        .card-counter { position: absolute; left: 50%; transform: translateX(-50%); font-family: monospace; font-size: 15px; font-weight: 700; padding: 4px 12px; border-radius: 10px; background: rgba(142, 142, 147, 0.12); display: flex; align-items: center; gap: 2px; direction: ltr; }
-        .seen-num { color: var(--sys-blue); opacity: 0.8; }
+        .card-counter { position: absolute; left: 50%; transform: translateX(-50%); font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 14.5px; font-weight: 700; padding: 5px 13px; border-radius: 20px; background: var(--search-bg); display: flex; align-items: center; gap: 2px; direction: ltr; }
+        .seen-num { color: var(--sys-blue); }
         .slash { color: var(--text-muted); opacity: 0.5; margin: 0 3px; }
         .total-num { color: var(--text-muted); }
 
-        .card-container { width: 100%; height: 440px; perspective: 1000px; margin-bottom: 20px; cursor: pointer; position: relative; }
-        .card { width: 100%; height: 100%; position: relative; transition: transform 0.5s; transform-style: preserve-3d; box-shadow: var(--shadow); border-radius: 24px; }
+        .card-container { width: 100%; height: 440px; perspective: 1400px; margin-bottom: 20px; cursor: pointer; position: relative; }
+        .card { width: 100%; height: 100%; position: relative; transition: transform 0.6s var(--ease-spring); transform-style: preserve-3d; box-shadow: var(--shadow-float); border-radius: 26px; }
         .card.is-flipped { transform: rotateY(180deg); }
-        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 24px; background: var(--card-bg); padding: 24px; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; }
+        .card-face { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 26px; background: var(--card-bg); padding: 24px; display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden; border: 0.5px solid var(--separator); }
         .card-face::-webkit-scrollbar { display: none; }
         .card-face { -ms-overflow-style: none; scrollbar-width: none; }
         .card-front { direction: ltr; align-items: center; justify-content: center; }
         .card-back { transform: rotateY(180deg); direction: rtl; }
-        
+
         .card-btns-layer { position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 20; pointer-events: none; transition: opacity 0.15s ease-in-out; }
         .card-btns-layer.hidden { opacity: 0; }
         .card-btns-layer.hidden .card-btn { pointer-events: none; }
-        .card-btn { position: absolute; top: 16px; background: none; border: none; cursor: pointer; padding: 6px; opacity: 0.85; transition: transform 0.1s; display: flex; align-items: center; justify-content: center; pointer-events: auto; }
+        .card-btn { position: absolute; top: 16px; background: var(--search-bg); border: none; cursor: pointer; width: 38px; height: 38px; border-radius: 50%; opacity: 0.9; transition: transform 0.15s var(--ease-spring); display: flex; align-items: center; justify-content: center; pointer-events: auto; }
         .card-btn:active { transform: scale(0.85); opacity: 1; }
-        .card-btn svg { width: 24px; height: 24px; }
+        .card-btn svg { width: 19px; height: 19px; }
         .btn-audio svg { fill: var(--sys-blue); }
         .card-btn-right { right: 16px; }
 
-        .english-word { font-size: 36px; font-weight: 700; margin-bottom: 5px; text-align: center; width: 100%; display: flex; justify-content: center;}
-        .ipa-text { font-size: 17px; color: var(--sys-blue); margin-bottom: 10px; font-family: times, serif; text-align: center; width: 100%; display: flex; justify-content: center; direction: ltr;}
-        
-        .back-ku-word { font-size: 34px; font-weight: 800; text-align: center; margin-bottom: 25px; color: var(--text-main); }
-        .back-section { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 20px; }
-        .back-section-title { font-size: 19px; font-weight: 800; margin-bottom: 10px; text-shadow: 0 1px 2px rgba(0,0,0,0.1); }
-        .title-green { color: var(--sys-green); }
-        .title-blue { color: var(--sys-blue); }
-        .title-red { color: var(--sys-red); }
-        .back-box { width: 100%; border: 2.5px solid var(--border-color); border-radius: 12px; padding: 14px; text-align: center; direction: ltr; font-size: 16px; background: transparent; color: var(--text-main); display: flex; align-items: center; justify-content: center; min-height: 56px; font-weight: 500; }
-        .back-row { display: flex; gap: 15px; width: 100%; }
-        .back-half { flex: 1; display: flex; flex-direction: column; align-items: center; }
-        
-        .action-buttons { display: flex; flex-direction: column; gap: 12px; width: 100%; margin-top: 5px; }
-        .btn-ios { width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 17px; font-weight: 600; cursor: pointer; color: white; transition: background-color 0.2s; }
-        .btn-next { background-color: var(--sys-blue); }
-        .btn-next:active:not(:disabled) { background-color: #005bb5; }
-        .btn-prev { background-color: var(--sys-red); margin-top: -4px;}
-        .btn-prev:active:not(:disabled) { background-color: #d70015; }
-        .btn-prev:disabled { background-color: var(--border-color); color: var(--text-muted); cursor: not-allowed; opacity: 0.5; }
+        .english-word { font-size: 34px; font-weight: 700; margin-bottom: 5px; text-align: center; width: 100%; display: flex; justify-content: center; letter-spacing: -0.4px; }
+        .ipa-text { font-size: 17px; color: var(--sys-blue); margin-bottom: 10px; font-family: Georgia, times, serif; font-style: italic; text-align: center; width: 100%; display: flex; justify-content: center; direction: ltr; opacity: 0.85; }
 
-        .srs-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 3000; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; animation: fadeIn 0.2s; }
-        .srs-card { background: var(--card-bg); border-radius: 20px; width: 100%; max-width: 350px; padding: 24px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-        .srs-btns { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
-        .btn-srs-op { width: 100%; padding: 16px; border: none; border-radius: 12px; font-size: 17px; font-weight: bold; color: white; cursor: pointer; }
+        .back-ku-word { font-size: 33px; font-weight: 800; text-align: center; margin-bottom: 24px; color: var(--text-main); }
+        .back-section { display: flex; flex-direction: column; align-items: center; width: 100%; margin-bottom: 18px; }
+        .back-section-title { font-size: 12.5px; font-weight: 700; margin-bottom: 9px; padding: 3px 13px; border-radius: 20px; }
+        .title-green { color: var(--sys-green); background: rgba(52,199,89,0.13); }
+        .title-blue { color: var(--sys-blue); background: rgba(0,122,255,0.13); }
+        .title-red { color: var(--sys-red); background: rgba(255,59,48,0.13); }
+        .back-box { width: 100%; border: none; border-radius: 14px; padding: 14px; text-align: center; direction: ltr; font-size: 15.5px; background: var(--search-bg); color: var(--text-main); display: flex; align-items: center; justify-content: center; min-height: 54px; font-weight: 500; }
+        .back-row { display: flex; gap: 12px; width: 100%; }
+        .back-half { flex: 1; display: flex; flex-direction: column; align-items: center; }
+
+        .action-buttons { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 5px; }
+        .btn-ios { width: 100%; padding: 16px; border: none; border-radius: 16px; font-size: 17px; font-weight: 600; cursor: pointer; color: white; transition: transform 0.15s var(--ease-spring), background-color 0.2s; }
+        .btn-next { background-color: var(--sys-blue); box-shadow: 0 8px 20px rgba(0,122,255,0.28); }
+        .btn-next:active:not(:disabled) { transform: scale(0.97); }
+        .btn-prev { background-color: rgba(255,59,48,0.12); color: var(--sys-red); margin-top: -4px;}
+        .btn-prev:active:not(:disabled) { transform: scale(0.97); background-color: rgba(255,59,48,0.2); }
+        .btn-prev:disabled { background-color: var(--search-bg); color: var(--text-muted); cursor: not-allowed; opacity: 0.5; }
+
+        .srs-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--modal-overlay); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); z-index: 3000; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; animation: fadeIn 0.2s var(--ease-smooth); }
+        .srs-card { background: var(--card-bg); border-radius: 22px; width: 100%; max-width: 350px; padding: 24px; text-align: center; box-shadow: var(--shadow-float); }
+        .srs-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+        .btn-srs-op { width: 100%; padding: 16px; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; color: white; cursor: pointer; transition: transform 0.15s var(--ease-spring); }
+        .btn-srs-op:active { transform: scale(0.96); }
         .btn-srs-hard { background-color: var(--sys-red); }
         .btn-srs-good { background-color: var(--sys-orange); }
         .btn-srs-easy { background-color: var(--sys-green); }
 
-        .quiz-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 3000; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; animation: fadeIn 0.3s; }
-        .quiz-header-text { font-size: 28px; font-weight: bold; color: white; margin-bottom: 30px; animation: pulse 1.5s infinite; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        .quiz-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.72); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); z-index: 3000; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 20px; animation: fadeIn 0.3s var(--ease-smooth); }
+        .quiz-header-text { font-size: 26px; font-weight: 800; color: white; margin-bottom: 28px; animation: pulse 1.5s infinite; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
-        .quiz-card { background: var(--card-bg); border-radius: 20px; width: 100%; max-width: 400px; padding: 24px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-        .quiz-question { font-size: 24px; font-weight: bold; direction: ltr; margin-bottom: 20px; color: var(--sys-blue); }
-        .quiz-option { width: 100%; background: var(--search-bg); border: 2px solid transparent; padding: 14px; border-radius: 12px; font-size: 16px; font-weight: 600; margin-bottom: 10px; cursor: pointer; transition: 0.2s; color: var(--text-main); }
-        .quiz-option.correct { background: var(--sys-green); color: white; }
-        .quiz-option.wrong { background: var(--sys-red); color: white; }
-        .quiz-feedback { margin-top: 15px; font-size: 16px; font-weight: bold; min-height: 24px; }
-        .btn-quiz-next { margin-top: 15px; width: 100%; padding: 14px; border: none; border-radius: 12px; background: var(--sys-blue); color: white; font-weight: bold; font-size: 16px; display: none; cursor: pointer;}
-        
-        .restore-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; border-bottom: 0.5px solid var(--border-color); }
-        .restore-en { font-size: 17px; font-weight: 600; direction: ltr; display: flex; align-items: center; gap: 8px;}
-        .restore-ku { font-size: 14px; color: var(--text-muted); }
-        .btn-audio-small { background: none; border: none; cursor: pointer; padding: 4px; display: flex; align-items: center; }
-        .btn-audio-small svg { width: 18px; height: 18px; fill: var(--sys-blue); }
-        .btn-restore-small { background-color: var(--sys-red); color: white; border: none; padding: 6px 14px; border-radius: 16px; font-size: 14px; font-weight: 600; cursor: pointer; }
-        .empty-message { text-align: center; color: var(--text-muted); font-size: 17px; padding: 40px; }
+        .quiz-card { background: var(--card-bg); border-radius: 22px; width: 100%; max-width: 400px; padding: 24px; text-align: center; box-shadow: var(--shadow-float); }
+        .quiz-question { font-size: 24px; font-weight: 700; direction: ltr; margin-bottom: 20px; color: var(--sys-blue); }
+        .quiz-option { width: 100%; background: var(--search-bg); border: 2px solid transparent; padding: 14px; border-radius: 14px; font-size: 16px; font-weight: 600; margin-bottom: 10px; cursor: pointer; transition: transform 0.12s var(--ease-spring), background-color 0.2s, color 0.2s; color: var(--text-main); position: relative; }
+        .quiz-option:active { transform: scale(0.97); }
+        .quiz-option.correct { background: var(--sys-green); color: white; padding-left: 40px; }
+        .quiz-option.wrong { background: var(--sys-red); color: white; padding-left: 40px; }
+        .quiz-option.correct::after { content: '✓'; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-weight: 800; }
+        .quiz-option.wrong::after { content: '✕'; position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-weight: 800; }
+        .quiz-feedback { margin-top: 15px; font-size: 15px; font-weight: 700; min-height: 24px; }
+        .btn-quiz-next { margin-top: 15px; width: 100%; padding: 14px; border: none; border-radius: 14px; background: var(--sys-blue); color: white; font-weight: 700; font-size: 16px; display: none; cursor: pointer; transition: transform 0.15s var(--ease-spring);}
+        .btn-quiz-next:active { transform: scale(0.97); }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--modal-overlay); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; backdrop-filter: blur(5px); animation: fadeIn 0.2s; }
-        .modal-box { background: var(--card-bg); border-radius: 20px; width: 100%; max-width: 320px; text-align: center; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .restore-item { display: flex; justify-content: space-between; align-items: center; padding: 13px 16px; position: relative; }
+        .restore-item::after { content: ''; position: absolute; bottom: 0; right: 16px; left: 16px; height: 0.5px; background: var(--separator); }
+        .restore-item:last-child::after { display: none; }
+        .restore-en { font-size: 16.5px; font-weight: 600; direction: ltr; display: flex; align-items: center; gap: 8px;}
+        .restore-ku { font-size: 13.5px; color: var(--text-muted); font-weight: 500; }
+        .btn-audio-small { background: var(--search-bg); border: none; cursor: pointer; padding: 5px; border-radius: 50%; display: flex; align-items: center; transition: transform 0.15s var(--ease-spring); }
+        .btn-audio-small:active { transform: scale(0.85); }
+        .btn-audio-small svg { width: 15px; height: 15px; fill: var(--sys-blue); }
+        .btn-restore-small { background-color: rgba(255,59,48,0.12); color: var(--sys-red); border: none; padding: 7px 14px; border-radius: 16px; font-size: 13px; font-weight: 700; cursor: pointer; transition: transform 0.15s var(--ease-spring); }
+        .btn-restore-small:active { transform: scale(0.93); }
+        .empty-message { text-align: center; color: var(--text-muted); font-size: 16px; padding: 50px 20px; font-weight: 500; }
+
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--modal-overlay); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 20px; backdrop-filter: blur(8px); animation: fadeIn 0.2s var(--ease-smooth); }
+        .modal-box { background: var(--card-bg); border-radius: 18px; width: 100%; max-width: 300px; text-align: center; overflow: hidden; box-shadow: var(--shadow-float); }
         .modal-content { padding: 22px 18px; }
-        .modal-title { font-size: 18px; font-weight: 700; margin-bottom: 10px; color: var(--text-main); }
-        .modal-desc { font-size: 15px; color: var(--text-muted); line-height: 1.4; margin: 0; }
-        .modal-actions { display: flex; border-top: 0.5px solid var(--border-color); }
-        .modal-btn { flex: 1; padding: 14px; border: none; background: none; font-size: 16px; font-weight: 600; cursor: pointer; color: var(--sys-blue); }
+        .modal-title { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: var(--text-main); }
+        .modal-desc { font-size: 13.5px; color: var(--text-secondary); line-height: 1.45; margin: 0; }
+        .modal-actions { display: flex; border-top: 0.5px solid var(--separator); }
+        .modal-btn { flex: 1; padding: 14px; border: none; background: none; font-size: 16px; font-weight: 600; cursor: pointer; color: var(--sys-blue); transition: background-color 0.15s; }
         .modal-btn:active { background-color: var(--search-bg); }
-        .modal-btn-danger { color: var(--sys-red); border-right: 0.5px solid var(--border-color); }
+        .modal-btn-danger { color: var(--sys-red); border-right: 0.5px solid var(--separator); }
 
-        .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .switch { position: relative; display: inline-block; width: 50px; height: 30px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #e5e5ea; transition: .3s; border-radius: 34px; }
-        .slider:before { position: absolute; content: ""; height: 24px; width: 24px; left: 2px; bottom: 2px; background-color: white; transition: .3s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.2);}
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(120,120,128,0.32); transition: .3s; border-radius: 34px; }
+        .slider:before { position: absolute; content: ""; height: 26px; width: 26px; left: 2px; bottom: 2px; background-color: white; transition: .3s var(--ease-spring); border-radius: 50%; box-shadow: 0 3px 8px rgba(0,0,0,0.18);}
         input:checked + .slider { background-color: var(--sys-green); }
-        input:checked + .slider:before { transform: translateX(22px); }
-        [data-theme="dark"] .slider { background-color: #39393d; }
+        input:checked + .slider:before { transform: translateX(20px); }
+        [data-theme="dark"] .slider { background-color: rgba(120,120,128,0.32); }
         [data-theme="dark"] input:checked + .slider { background-color: var(--sys-green); }
 
     </style>
@@ -151,8 +179,7 @@
     <script src="words_b2.js"></script>
     <script src="words_c1.js"></script>
 </head>
-<body data-theme="dark">
-
+<body>
 
     <div class="nav-bar">
         <button class="nav-btn" id="nav-back-btn" style="display: none;" onclick="switchMainTab('home-tab')">‹ گەڕانەوە</button>
@@ -167,7 +194,7 @@
                 <h3>ئامانجی ئەمڕۆ 🎯</h3>
                 <p id="daily-progress-text">٠ وشەت خوێندووە</p>
             </div>
-            
+
             <div style="display: flex; gap: 15px;">
                 <!-- کۆی ڕۆژەکانی سەردان (سفر نابێتەوە) -->
                 <div style="display: flex; flex-direction: column; align-items: center;">
@@ -233,7 +260,7 @@
             </div>
             <button class="btn-reset-seen" onclick="promptResetSeen()">تێکەڵکردنەوە 🔄</button>
         </div>
-        
+
         <div class="card-container" id="card-container" onclick="flipCard()">
             <div class="card-btns-layer" id="card-btns-layer">
                 <button class="card-btn btn-audio card-btn-right" id="main-audio-btn"></button>
@@ -329,16 +356,17 @@
     const volumeSvg = `<svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>`;
 
     function speakRealAudio(text, event) {
-        if (event) event.stopPropagation();
-        if ('speechSynthesis' in window) {
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US';
-            utterance.rate = 0.7;
-            window.speechSynthesis.speak(utterance);
-        } else {
-            alert("ببورە، مۆبایلەکەت پشتگیری سیستەمی دەنگ ناکات.");
-        }
+    if (event) event.stopPropagation();
+    if ('speechSynthesis' in window) {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'de-DE'; // لێرەدا زمانەکە گۆڕدرا بۆ ئەڵمانی
+        utterance.rate = 0.7; // خێرایی خوێندنەوەکە
+        window.speechSynthesis.speak(utterance);
+    } else {
+        alert("ببورە، مۆبایلەکەت پشتگیری سیستەمی دەنگ ناکات.");
     }
+}
+
 
     const rawWords = [
         ...(typeof words_a1 !== 'undefined' ? words_a1 : (typeof wordsA1 !== 'undefined' ? wordsA1 : [])),
@@ -347,12 +375,12 @@
         ...(typeof words_b2 !== 'undefined' ? words_b2 : (typeof wordsB2 !== 'undefined' ? wordsB2 : [])),
         ...(typeof words_c1 !== 'undefined' ? words_c1 : (typeof wordsC1 !== 'undefined' ? wordsC1 : []))
     ];
-    
-    const allWords = rawWords; 
+
+    const allWords = rawWords;
 
     // داتاکان بە گۆڕانکارییە نوێیەکانەوە بۆ زیادکردنی ڕۆژی سەردان و کات
-    let userData = JSON.parse(localStorage.getItem('vocabMaster_Pro_Final')) || { 
-        levelStates: {}, knownWords: [], streak: 0, lastStudyDate: '', wordsToday: 0, totalDaysVisited: 0, lastStudyTimestamp: 0 
+    let userData = JSON.parse(localStorage.getItem('vocabMaster_Pro_Final')) || {
+        levelStates: {}, knownWords: [], streak: 0, lastStudyDate: '', wordsToday: 0, totalDaysVisited: 0, lastStudyTimestamp: 0
     };
 
     if (userData.totalDaysVisited === undefined) userData.totalDaysVisited = 0;
@@ -372,7 +400,7 @@
             saveData();
         }
     }
-    
+
     checkNewDay();
 
     const levelsList = ['A1', 'A2', 'B1', 'B2', 'C1'];
@@ -403,7 +431,7 @@
     }
 
     function renderHome() {
-        checkNewDay(); 
+        checkNewDay();
         document.getElementById('streak-days').innerText = userData.streak;
         document.getElementById('total-days').innerText = userData.totalDaysVisited;
         document.getElementById('daily-progress-text').innerText = `${userData.wordsToday} وشەت خوێندووە`;
@@ -424,7 +452,7 @@
     function openLevel(level) {
         currentLevel = level;
         let levelWords = allWords.filter(w => w.level === level);
-        
+
         if (!userData.levelStates[level]) {
             userData.levelStates[level] = { order: levelWords.sort(() => Math.random() - 0.5).map(w => getWordKey(w)), index: 0 };
             saveData();
@@ -438,7 +466,7 @@
                 saveData();
             }
         }
-        
+
         activeWords = [];
         let savedOrder = userData.levelStates[level].order;
         for (let key of savedOrder) {
@@ -447,15 +475,15 @@
                 if (wordObj) activeWords.push(wordObj);
             }
         }
-        
+
         currentIndex = userData.levelStates[level].index || 0;
         if(currentIndex >= activeWords.length) currentIndex = Math.max(0, activeWords.length - 1);
-        
+
         document.querySelectorAll('.view-container').forEach(v => v.classList.remove('view-active'));
         document.getElementById('flashcard-view').classList.add('view-active');
         document.getElementById('nav-title').innerText = `${level} Level`;
         document.getElementById('nav-back-btn').style.display = 'flex';
-        
+
         activeWords.length > 0 ? showWord() : showEmptyMessage();
     }
 
@@ -471,11 +499,11 @@
 
     function showWord() {
         if(activeWords.length === 0) { showEmptyMessage(); return; }
-        
+
         document.getElementById('card-counter').style.opacity = '1';
         document.getElementById('action-buttons').style.display = 'flex';
         const wordObj = activeWords[currentIndex];
-        
+
         document.getElementById('seen-count').innerText = currentIndex + 1;
         document.getElementById('total-count').innerText = activeWords.length;
         document.getElementById('level-indicator').innerText = currentLevel;
@@ -484,7 +512,7 @@
         document.getElementById('prev-btn').disabled = isFirstWord;
 
         const safeWord = wordObj.en.replace(/'/g, "\\'");
-        
+
         const mainAudioBtn = document.getElementById('main-audio-btn');
         mainAudioBtn.innerHTML = volumeSvg;
         mainAudioBtn.setAttribute('onclick', `speakRealAudio('${safeWord}', event)`);
@@ -499,7 +527,7 @@ ${wordObj.img ? `<div style="font-size: 60px; display: flex; justify-content: ce
 
         let backHtml = `<div class="card-content-inner" style="justify-content: flex-start; padding-top: 15px; width: 100%;">
             <h2 class="back-ku-word">${wordObj.ku}</h2>`;
-            
+
         if (wordObj.example && wordObj.example.toLowerCase() !== 'none') {
             backHtml += `
             <div class="back-section">
@@ -538,19 +566,19 @@ ${wordObj.img ? `<div style="font-size: 60px; display: flex; justify-content: ce
         document.getElementById('card-front').innerHTML = frontHtml;
         document.getElementById('card-back').innerHTML = backHtml;
         document.getElementById('the-card').classList.remove('is-flipped');
-        
+
         let flashContent = document.getElementById('flashcard-content');
         if(flashContent && flashContent.contains(document.querySelector('.empty-message'))) flashContent.innerHTML = '';
     }
 
-    function flipCard() { 
+    function flipCard() {
         const card = document.getElementById('the-card');
         const btnsLayer = document.getElementById('card-btns-layer');
         if (btnsLayer) btnsLayer.classList.add('hidden');
-        card.classList.toggle('is-flipped'); 
-        setTimeout(() => { 
-            if (btnsLayer) btnsLayer.classList.remove('hidden'); 
-        }, 300); 
+        card.classList.toggle('is-flipped');
+        setTimeout(() => {
+            if (btnsLayer) btnsLayer.classList.remove('hidden');
+        }, 300);
     }
 
     function attemptNextWord(event) {
@@ -561,11 +589,11 @@ ${wordObj.img ? `<div style="font-size: 60px; display: flex; justify-content: ce
     function processSRS(rating, event) {
         if(event) event.stopPropagation();
         document.getElementById('srs-overlay').style.display = 'none';
-        
-        checkNewDay(); 
-        
+
+        checkNewDay();
+
         let currentDate = new Date().toDateString();
-        
+
         // کاتێک یەکەم وشەی ڕۆژەکە دەخوێنێتەوە، سترییک و ڕۆژی گشتی زیاد دەبێت
         if (userData.lastStudyDate !== currentDate) {
             userData.streak++;
@@ -575,7 +603,7 @@ ${wordObj.img ? `<div style="font-size: 60px; display: flex; justify-content: ce
 
         userData.wordsToday++;
         userData.lastStudyTimestamp = Date.now(); // نوێکردنەوەی کات بۆ هەژمارکردنی ٧٢ کاتژمێرەکە
-        
+
         const wordKey = getWordKey(activeWords[currentIndex]);
 
         if (rating === 'easy') {
@@ -609,11 +637,11 @@ ${wordObj.img ? `<div style="font-size: 60px; display: flex; justify-content: ce
     document.getElementById('card-container').addEventListener('touchstart', e => touchstartX = e.changedTouches[0].screenX);
     document.getElementById('card-container').addEventListener('touchend', e => {
         touchendX = e.changedTouches[0].screenX;
-        if (touchendX < touchstartX - 50) { 
-            attemptNextWord(); 
+        if (touchendX < touchstartX - 50) {
+            attemptNextWord();
         }
-        if (touchendX > touchstartX + 50) { 
-            prevWord(); 
+        if (touchendX > touchstartX + 50) {
+            prevWord();
         }
     });
 
@@ -673,10 +701,10 @@ ${wordObj.img ? `<div style="font-size: 60px; display: flex; justify-content: ce
     function filterLearnedWords(query) {
         const container = document.getElementById('learned-words-list'); container.innerHTML = '';
         if(!userData.knownWords) userData.knownWords = [];
-        
+
         const filtered = allWords.filter(w => userData.knownWords.includes(getWordKey(w)) && (w.en.toLowerCase().includes(query.toLowerCase()) || w.ku.includes(query)));
-        
-        if (filtered.length === 0) { container.innerHTML = `<div class="empty-message">هیچ وشەیەکت لەبەر نەکردووە.</div>`; } 
+
+        if (filtered.length === 0) { container.innerHTML = `<div class="empty-message">هیچ وشەیەکت لەبەر نەکردووە.</div>`; }
         else {
             filtered.forEach(w => {
                 const safeWord = w.en.replace(/'/g, "\\'");
@@ -701,7 +729,7 @@ ${wordObj.img ? `<div style="font-size: 60px; display: flex; justify-content: ce
         const resBox = document.getElementById('search-results');
         if(query.length < 2) { resBox.style.display = 'none'; return; }
         const results = allWords.filter(w => w.en.toLowerCase().includes(query.toLowerCase()) || w.ku.includes(query)).slice(0, 10);
-        if(results.length === 0) { resBox.innerHTML = '<div style="padding:15px; text-align:center;">نەدۆزرایەوە</div>'; } 
+        if(results.length === 0) { resBox.innerHTML = '<div style="padding:15px; text-align:center;">نەدۆزرایەوە</div>'; }
         else {
             resBox.innerHTML = results.map(w => `
                 <div class="ios-item" style="cursor:default;">
@@ -713,44 +741,44 @@ ${wordObj.img ? `<div style="font-size: 60px; display: flex; justify-content: ce
     }
 
     function showInfoBox() { document.getElementById('info-modal').style.display = 'flex'; }
-    
+
     function toggleThemeSwitch() {
         const themeLabel = document.getElementById('theme-text-label');
-        const themeMeta = document.getElementById('theme-meta'); 
+        const themeMeta = document.getElementById('theme-meta');
 
         if (document.getElementById('theme-toggle').checked) {
             document.body.setAttribute('data-theme', 'dark');
             localStorage.setItem('theme', 'dark');
             if(themeLabel) themeLabel.innerText = '🌙 دۆخی تاریک';
-            if(themeMeta) themeMeta.setAttribute('content', '#000000'); 
+            if(themeMeta) themeMeta.setAttribute('content', '#000000');
         } else {
             document.body.removeAttribute('data-theme');
             localStorage.setItem('theme', 'light');
             if(themeLabel) themeLabel.innerText = '☀️ دۆخی ڕووناک';
-            if(themeMeta) themeMeta.setAttribute('content', '#f2f2f7'); 
+            if(themeMeta) themeMeta.setAttribute('content', '#f2f2f7');
         }
     }
 
-    window.onload = () => { 
+    window.onload = () => {
         const themeLabel = document.getElementById('theme-text-label');
-        const themeMeta = document.getElementById('theme-meta'); 
+        const themeMeta = document.getElementById('theme-meta');
 
         // لێرەدا پێی دەڵێین: ئەگەر پێشتر بە دەستی خۆی نەیگۆڕیبوو بۆ ڕووناک، ئەوا با تاریک بێت
         if (localStorage.getItem('theme') !== 'light') {
-            document.body.setAttribute('data-theme', 'dark'); 
+            document.body.setAttribute('data-theme', 'dark');
             const toggle = document.getElementById('theme-toggle');
             if(toggle) toggle.checked = true;
             if(themeLabel) themeLabel.innerText = '🌙 دۆخی تاریک';
-            if(themeMeta) themeMeta.setAttribute('content', '#000000'); 
+            if(themeMeta) themeMeta.setAttribute('content', '#000000');
         } else {
             // ئەگەر پێشتر ڕووناکی هەڵبژاردبوو
             document.body.removeAttribute('data-theme');
             const toggle = document.getElementById('theme-toggle');
             if(toggle) toggle.checked = false;
             if(themeLabel) themeLabel.innerText = '☀️ دۆخی ڕووناک';
-            if(themeMeta) themeMeta.setAttribute('content', '#f2f2f7'); 
+            if(themeMeta) themeMeta.setAttribute('content', '#f2f2f7');
         }
-        renderHome(); 
+        renderHome();
     };
 
 </script>
